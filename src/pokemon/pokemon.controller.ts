@@ -27,7 +27,7 @@ export class PokemonController {
 
   @Patch(':term')
   update(@Param('term') term: string, @Body() updatePokemonDto: UpdatePokemonDto) {
-    return this.pokemonService.update(+term, updatePokemonDto);
+    return this.pokemonService.update(term, updatePokemonDto);
   }
 
   @Delete(':id')

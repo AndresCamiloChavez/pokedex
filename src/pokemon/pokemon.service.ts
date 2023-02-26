@@ -24,15 +24,7 @@ export class PokemonService {
       const pokemon = await this.pokemonModel.create(createPokemonDto);
       return pokemon;
     } catch (error) {
-      if (error.code === 11000) {
-        throw new BadRequestException(
-          `Pokemon exist in DB ${JSON.stringify(error.keyValue)}`,
-        );
-      }
-      console.log(error);
-      throw new InternalServerErrorException(
-        `Can't craete Pokemon - Check server logs`,
-      );
+      this.handleExceptions(error);
     }
   }
 
@@ -50,8 +42,10 @@ export class PokemonService {
       pokemon = await this.pokemonModel.findById(term);
     }
 
-    if(!pokemon){
-      pokemon = await this.pokemonModel.findOne({name: term.toLowerCase().trim() });
+    if (!pokemon) {
+      pokemon = await this.pokemonModel.findOne({
+        name: term.toLowerCase().trim(),
+      });
     }
 
     if (!pokemon)
@@ -62,11 +56,34 @@ export class PokemonService {
     return pokemon;
   }
 
-  update(term: number, updatePokemonDto: UpdatePokemonDto) {
-    return `This action updates a #${term} pokemon`;
+  async update(term: string, updatePokemonDto: UpdatePokemonDto) {
+    let pokemon: Pokemon = await this.findOne(term);
+    if (updatePokemonDto.name) {
+      updatePokemonDto.name = updatePokemonDto.name.toLowerCase();
+    }
+    try {
+      const updatePokemon = await pokemon.updateOne(updatePokemonDto, {
+        new: true,
+      }); // para regresar el nuevo objeto
+      return { ...pokemon.toJSON(), ...updatePokemonDto }; // para regresar el pokemon actualizado
+    } catch (error) {
+      this.handleExceptions(error);
+    }
+    // updatePokemon no se puede retornar ya que nos devuelve cosas 'raras' de mongo y no las propiedades directamente
   }
 
   remove(id: number) {
     return `This action removes a #${id} pokemon`;
+  }
+
+  private handleExceptions(error: any) {
+    if (error.code === 11000) {
+      throw new BadRequestException(
+        `Pokemon exist in DB ${JSON.stringify(error.keyValue)}`,
+      );
+    }
+    throw new InternalServerErrorException(
+      `Can't craete Pokemon - Check server logs`,
+    );
   }
 }
