@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+/mongo
 
 # Logs
 logs
@@ -17,7 +18,6 @@ lerna-debug.log*
 # Tests
 /coverage
 /.nyc_output
-/mongo
 
 # IDEs and editors
 /.idea

@@ -72,8 +72,10 @@ export class PokemonService {
     // updatePokemon no se puede retornar ya que nos devuelve cosas 'raras' de mongo y no las propiedades directamente
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pokemon`;
+  async remove(id: string) {
+    const pokemon = await this.findOne(id);
+    pokemon.deleteOne();
+    
   }
 
   private handleExceptions(error: any) {
