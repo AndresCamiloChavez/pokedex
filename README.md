@@ -9,6 +9,8 @@
 3. Tener Nest CLI instalado: 
 ```npm i -g @nestjs/cli```
 4. Levantar la base de datos: ``` docker-compose -d```
+5. Construir la base de datos con la semilla
+```http://localhost:3000/api/v2/seed```
 
 
 
