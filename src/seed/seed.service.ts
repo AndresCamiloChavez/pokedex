@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import axios, { AxiosInstance } from 'axios';
 import { Model } from 'mongoose';
 import { Pokemon } from 'src/pokemon/entities/pokemon.entity';
 import { PokeResponse } from './interfaces/pokeresponse.interface';
-import { HttpAdapter } from '../../dist/common/interfaces/http-adapter.interface';
 import { AxiosAdapter } from '../common/http_adapters/axios.adapter';
 @Injectable()
 export class SeedService {
